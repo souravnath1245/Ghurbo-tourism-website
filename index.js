@@ -1,16 +1,17 @@
 const express = require("express");
-const { MongoClient, ObjectId, LoggerLevel } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 4000;
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
-
+// LoggerLevel
 // userName : tourism-project
 // password : pGZs0Ropb2Fp8q01
 
-const uri = `mongodb+srv://tourism-project:pGZs0Ropb2Fp8q01@cluster0.nnyci.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.nnyci.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
