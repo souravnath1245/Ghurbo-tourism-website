@@ -16,7 +16,7 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-console.log(uri);
+
 
 async function run() {
   try {
@@ -67,7 +67,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Wellcome to my server");
+  res.send("Wellcome to my tourism server");
 });
 
 app.listen(port, () => {
