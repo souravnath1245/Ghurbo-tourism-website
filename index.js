@@ -46,6 +46,17 @@ async function run() {
       console.log("Load User with ", id);
       res.send(result);
     });
+
+    //Delete Api :
+    app.delete("/destination/users/:id" , async(req,res )=>{
+       const id = req.params.id;
+       const query ={ _id: ObjectId(id)};
+       const result = await databaseClient.deleteOne(query)
+       console.log("deleting Id :", result);
+       res.send(result)
+    }) 
+
+
     //Post Api :
     app.post("/destination", async (req, res) => {
       const newUser = req.body;
