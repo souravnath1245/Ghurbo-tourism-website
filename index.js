@@ -17,7 +17,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-
 async function run() {
   try {
     await client.connect();
@@ -25,17 +24,12 @@ async function run() {
     const database = client.db("Gurbo");
     const databaseCollection = database.collection("Destination");
     const databaseClient = database.collection("Various-Client");
+    const placeNumber = database.collection("Places");
 
     // Get Api :
     app.get("/destination/users", async (req, res) => {
       const users = databaseClient.find({});
       const result = await users.toArray();
-      res.send(result);
-    });
-
-    app.get("/destination", async (req, res) => {
-      const cursor = databaseCollection.find({});
-      const result = await cursor.toArray();
       res.send(result);
     });
 
@@ -47,28 +41,33 @@ async function run() {
       res.send(result);
     });
 
-    //Delete Api :
-    app.delete("/destination/users/:id" , async(req,res )=>{
-       const id = req.params.id;
-       const query ={ _id: ObjectId(id)};
-       const result = await databaseClient.deleteOne(query)
-       console.log("deleting Id :", result);
-       res.send(result)
-    }) 
-
-
-    //Post Api :
-    app.post("/destination", async (req, res) => {
-      const newUser = req.body;
-      const result = await databaseCollection.insertOne(newUser);
-      console.log("Hitting the post ", result);
-      res.json(result);
+    app.get("/destination", async (req, res) => {
+      const cursor = databaseCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
+    //Delete Api :
+    app.delete("/destination/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await databaseClient.deleteOne(query);
+      console.log("deleting Id :", result);
+      res.send(result);
+    });
+
+    //Post Api :
     app.post("/destination/users", async (req, res) => {
       const client = req.body;
       const result = await databaseClient.insertOne(client);
       console.log("Hitting The Client Post ", result);
+      res.json(result);
+    });
+
+    app.post("/destination", async (req, res) => {
+      const newUser = req.body;
+      const result = await databaseCollection.insertOne(newUser);
+      console.log("Hitting the post ", result);
       res.json(result);
     });
   } finally {
